@@ -17,4 +17,5 @@ public interface BookService {
     List<Book> findByWriterSecondName(Object secondName);
     void delete(Object id);
     List<Book> findByWriter(Writer writer);
+    Book update(Book book);
 }

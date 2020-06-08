@@ -1,4 +1,4 @@
-package com.folies.services;
+package com.folies.services.impl;
 
 import com.folies.entity.Book;
 import com.folies.entity.Writer;
@@ -6,6 +6,7 @@ import com.folies.exceptions.EntityIllegalArgumentException;
 import com.folies.exceptions.EntityNotFoundException;
 import com.folies.jpa.BookRepository;
 import com.folies.jpa.WriterRepository;
+import com.folies.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -46,8 +47,7 @@ public class SimpleBookService implements BookService {
             throw  new EntityIllegalArgumentException(String.format("Не удалось преобразовать идентификатор к нужному типу," +
                     "текст ошибки: %s", exception));
         }
-        Optional<Book> optionalBook;
-        optionalBook = bookRepository.findById(parsedId);
+        Optional<Book> optionalBook = bookRepository.findById(parsedId);
         if (optionalBook.isEmpty()) {
             throw new EntityNotFoundException(Book.TYPE_NAME, parsedId);
         }
@@ -139,5 +139,31 @@ public class SimpleBookService implements BookService {
             throw new EntityIllegalArgumentException("Идентификатор автора не может быть null");
         }
         return bookRepository.findByWriter(writer);
+    }
+
+    @Override
+    public Book update(Book book) {
+        if (book == null) {
+            throw new EntityIllegalArgumentException("Изменяемый объект не может быть null");
+        }
+        if (book.getId() == null) {
+            throw new EntityIllegalArgumentException("Идентификатор объекта не может быть null");
+        }
+        if (book.getName() == null) {
+            throw new EntityIllegalArgumentException("Наименование книги не может быть null");
+        }
+        if (book.getName().isBlank()) {
+            throw new EntityIllegalArgumentException("Наименование книги не может быть пустым");
+        }
+        if (book.getWriter() == null) {
+            throw new EntityIllegalArgumentException("Автор не может быть null");
+        }
+        if (book.getWriter().getId() == null) {
+            throw new EntityIllegalArgumentException("Идентификатор автора не может быть null");
+        }
+        if (bookRepository.findById(book.getId()).isEmpty()) {
+            throw new EntityNotFoundException(Book.TYPE_NAME, book.getId());
+        }
+        return bookRepository.save(book);
     }
 }

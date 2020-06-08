@@ -1,4 +1,4 @@
-package com.folies.services;
+package com.folies.services.impl;
 
 import com.folies.entity.Book;
 import com.folies.entity.Writer;
@@ -8,13 +8,14 @@ import com.folies.exceptions.EntityIllegalArgumentException;
 import com.folies.exceptions.EntityNotFoundException;
 import com.folies.jpa.BookRepository;
 import com.folies.jpa.WriterRepository;
+import com.folies.services.WriterService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 
 @Service
-public class SimpleWriterService implements WriterService{
+public class SimpleWriterService implements WriterService {
     private final WriterRepository writerRepository;
     private final BookRepository bookRepository;
 
@@ -53,8 +54,7 @@ public class SimpleWriterService implements WriterService{
             throw  new EntityIllegalArgumentException(String.format("Не удалось преобразовать идентификатор к нужному типу," +
                     "текст ошибки: %s", exception));
         }
-        Optional<Writer> optionalWriter;
-        optionalWriter = writerRepository.findById(parsedId);
+        Optional<Writer> optionalWriter = writerRepository.findById(parsedId);
         if (optionalWriter.isEmpty()) {
             throw new EntityNotFoundException(Writer.TYPE_NAME, parsedId);
         }
@@ -84,5 +84,19 @@ public class SimpleWriterService implements WriterService{
             throw new EntityHasDetailsException(Book.TYPE_NAME, writer.getId());
         }
         writerRepository.delete(writer);
+    }
+
+    @Override
+    public Writer update(Writer writer) {
+        if (writer == null) {
+            throw new EntityIllegalArgumentException("Создаваемый объект не может быть null");
+        }
+        if (writer.getId() == null) {
+            throw new EntityIllegalArgumentException("Идентификатор объекта не может быть null");
+        }
+        if (writerRepository.findById(writer.getId()).isEmpty()) {
+            throw new EntityNotFoundException(Writer.TYPE_NAME, writer.getId());
+        }
+        return writerRepository.save(writer);
     }
 }

@@ -10,4 +10,5 @@ public interface WriterService {
     Writer findById(Object id);
     Writer create(Writer writer);
     void delete(Object id);
+    Writer update(Writer writer);
 }

@@ -1,9 +1,11 @@
 package com.folies.controllers;
 
-import com.folies.entity.BookJdbcDemo;
 import com.folies.entity.Book;
+import com.folies.entity.Writer;
 import com.folies.services.BookService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Date;
@@ -15,52 +17,65 @@ public class BookController {
 	private final BookService bookService;
 
 	@Autowired
-	public BookController(BookService bookService) {
+	public BookController(@Qualifier("simpleBookService") BookService bookService) {
 		this.bookService = bookService;
 	}
 
 	@GetMapping("/count")
-	public Long getBooksCount() {
+	public Long count() {
 		return bookService.getCount();
 	}
 
-//	@GetMapping("/all")
-//	public List<BookJdbcDemo> getBooks() {
-//		return bookService.getAll();
-//	}
-//
-//	@GetMapping("/released_after_1999")
-//	public List<BookJdbcDemo> getBooksReleasedAfter1999() {
-//		return bookService.getBooksReleasedAfter1999();
-//	}
-
-	@GetMapping("/jpa")
-	public List<Book> getBooksJpa() {
+	@GetMapping
+	public List<Book> findAll() {
 		return bookService.findAll();
 	}
 
-	@PostMapping("/jpa")
-	public Book addBookJpa(@RequestBody Book book) {
+	@GetMapping("/{id}")
+	public Book findById(@PathVariable String id) {
+		return bookService.findById(id);
+	}
+
+	@PostMapping
+	@ResponseStatus(HttpStatus.CREATED)
+	public Book create(@RequestBody Book book) {
 		return bookService.create(book);
 	}
 
-	@GetMapping("/jpa/last/releaseDate/kafka")
-	public Date getKafkaLastBookReleaseDate() {
-		return bookService.getLastBookReleaseDateByAuthorId(1);
+	@GetMapping("/date/last/by/author/{id}")
+	public Date getLastBookReleaseDateByAuthorId(@PathVariable String id) {
+		return bookService.getLastBookReleaseDateByAuthorId(id);
 	}
 
-	@GetMapping("/jpa/exists/thejudgment")
-	public boolean existByNameTheJudgment() {
-		return bookService.existsByName("The Judgment");
+	@GetMapping("/exists/by/name/{name}")
+	public boolean existByName(@PathVariable String name) {
+		return bookService.existsByName(name);
 	}
 
-	@GetMapping("/jpa/notreleased")
+	@GetMapping("/find/by/notreleased")
 	public List<Book> findByReleaseDateIsNull() {
 		return bookService.findByReleaseDateIsNull();
 	}
 
-	@GetMapping("jpa/writtenByKafka")
-	public List<Book> findWrittenByKafka() {
-		return bookService.findByWriterSecondName("Kafka");
+	@GetMapping("/find/by/author/secondName/{secondName}")
+	public List<Book> findByWriterSecondName(@PathVariable String secondName) {
+		return bookService.findByWriterSecondName(secondName);
+	}
+
+	@GetMapping("/find/by/author")
+	public List<Book> findByWriter(@RequestBody Writer writer) {
+		return bookService.findByWriter(writer);
+	}
+
+	@PutMapping
+	@ResponseStatus(HttpStatus.OK)
+	public Book update(@RequestBody Book product) {
+		return bookService.update(product);
+	}
+
+	@DeleteMapping("/{id}")
+	@ResponseStatus(HttpStatus.NO_CONTENT)
+	public void delete(@PathVariable String id) {
+		bookService.delete(id);
 	}
 }
