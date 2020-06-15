@@ -9,13 +9,13 @@ import java.util.List;
 public interface BookService {
     long getCount();
     List<Book> findAll();
-    Book findById(Object id);
+    Book findById(String id);
     Book create(Book book);
-    Date getLastBookReleaseDateByAuthorId(Object id);
-    boolean existsByName(Object name);
+    Date getLastBookReleaseDateByAuthorId(String id);
+    boolean existsByName(String name);
     List<Book> findByReleaseDateIsNull();
-    List<Book> findByWriterSecondName(Object secondName);
-    void delete(Object id);
+    List<Book> findByWriterSecondName(String secondName);
+    void delete(String id);
     List<Book> findByWriter(Writer writer);
     Book update(Book book);
 }

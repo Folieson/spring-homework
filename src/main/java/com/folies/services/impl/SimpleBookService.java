@@ -36,13 +36,13 @@ public class SimpleBookService implements BookService {
     }
 
     @Override
-    public Book findById(Object id) {
+    public Book findById(String id) {
         if (id == null) {
             throw new EntityIllegalArgumentException("Идентификатор объекта не может быть null");
         }
         Integer parsedId;
         try {
-            parsedId = Integer.valueOf((String) id);
+            parsedId = Integer.valueOf(id);
         } catch (NumberFormatException exception) {
             throw  new EntityIllegalArgumentException(String.format("Не удалось преобразовать идентификатор к нужному типу," +
                     "текст ошибки: %s", exception));
@@ -81,13 +81,13 @@ public class SimpleBookService implements BookService {
     }
 
     @Override
-    public Date getLastBookReleaseDateByAuthorId(Object id) {
+    public Date getLastBookReleaseDateByAuthorId(String id) {
         if (id == null) {
             throw new EntityIllegalArgumentException("Идентификатор объекта не может быть null");
         }
         Integer parsedId;
         try {
-            parsedId = Integer.valueOf((String) id);
+            parsedId = Integer.valueOf(id);
         } catch (NumberFormatException exception) {
             throw  new EntityIllegalArgumentException(String.format("Не удалось преобразовать идентификатор к нужному типу," +
                     "текст ошибки: %s", exception));
@@ -100,15 +100,14 @@ public class SimpleBookService implements BookService {
     }
 
     @Override
-    public boolean existsByName(Object name) {
+    public boolean existsByName(String name) {
         if (name == null) {
             throw new EntityIllegalArgumentException("Название книги не может быть null");
         }
-        String parsedName = String.valueOf(name);
-        if (parsedName.isBlank()) {
+        if (name.isBlank()) {
             throw new EntityIllegalArgumentException("Фамилия писателя не может быть пустым");
         }
-        return bookRepository.existsByName(parsedName);
+        return bookRepository.existsByName(name);
     }
 
     @Override
@@ -117,15 +116,15 @@ public class SimpleBookService implements BookService {
     }
 
     @Override
-    public List<Book> findByWriterSecondName(Object secondName) {
+    public List<Book> findByWriterSecondName(String secondName) {
         if (secondName == null) {
             throw new EntityIllegalArgumentException("Фамилия писателя не может быть null");
         }
-        return bookRepository.findByWriterSecondName(String.valueOf(secondName));
+        return bookRepository.findByWriterSecondName(secondName);
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(String id) {
         Book book = findById(id);
         bookRepository.delete(book);
     }

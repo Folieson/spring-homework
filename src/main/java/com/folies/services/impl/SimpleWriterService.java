@@ -31,25 +31,24 @@ public class SimpleWriterService implements WriterService {
     }
 
     @Override
-    public List<Writer> findBySecondName(Object secondName) {
+    public List<Writer> findBySecondName(String secondName) {
         if (secondName == null) {
             throw new EntityIllegalArgumentException("Фамилия писателя не может быть null");
         }
-        String secondNameStr = String.valueOf(secondName);
-        if (secondNameStr.isBlank()) {
+        if (secondName.isBlank()) {
             throw new EntityIllegalArgumentException("Фамилия писателя не может быть пустой");
         }
-        return writerRepository.findBySecondName(secondNameStr);
+        return writerRepository.findBySecondName(secondName);
     }
 
     @Override
-    public Writer findById(Object id) {
+    public Writer findById(String id) {
         if (id == null) {
             throw new EntityIllegalArgumentException("Идентификатор объекта не может быть null");
         }
         Integer parsedId;
         try {
-            parsedId = Integer.valueOf((String) id);
+            parsedId = Integer.valueOf(id);
         } catch (NumberFormatException exception) {
             throw  new EntityIllegalArgumentException(String.format("Не удалось преобразовать идентификатор к нужному типу," +
                     "текст ошибки: %s", exception));
@@ -77,7 +76,7 @@ public class SimpleWriterService implements WriterService {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(String id) {
         Writer writer = findById(id);
         List<Book> books = bookRepository.findByWriter(writer);
         if (!books.isEmpty()) {

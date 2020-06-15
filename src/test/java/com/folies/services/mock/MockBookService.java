@@ -23,9 +23,9 @@ public class MockBookService implements BookService {
     }
 
     @Override
-    public Book findById(Object id) {
-        return new Book(Integer.valueOf((String) id),"Foo", Calendar.getInstance().getTime(),
-                new Writer(Integer.valueOf((String) id),"Jane", "Doe", Calendar.getInstance().getTime()));
+    public Book findById(String id) {
+        return new Book(Integer.valueOf(id),"Foo", Calendar.getInstance().getTime(),
+                new Writer(Integer.valueOf(id),"Jane", "Doe", Calendar.getInstance().getTime()));
     }
 
     @Override
@@ -34,12 +34,12 @@ public class MockBookService implements BookService {
     }
 
     @Override
-    public Date getLastBookReleaseDateByAuthorId(Object id) {
+    public Date getLastBookReleaseDateByAuthorId(String id) {
         return Calendar.getInstance().getTime();
     }
 
     @Override
-    public boolean existsByName(Object name) {
+    public boolean existsByName(String name) {
         return true;
     }
 
@@ -49,12 +49,12 @@ public class MockBookService implements BookService {
     }
 
     @Override
-    public List<Book> findByWriterSecondName(Object secondName) {
+    public List<Book> findByWriterSecondName(String secondName) {
         return new ArrayList<>();
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(String id) {
 
     }
 

@@ -6,9 +6,9 @@ import java.util.List;
 
 public interface WriterService {
     List<Writer> findAll();
-    List<Writer> findBySecondName(Object secondName);
-    Writer findById(Object id);
+    List<Writer> findBySecondName(String secondName);
+    Writer findById(String id);
     Writer create(Writer writer);
-    void delete(Object id);
+    void delete(String id);
     Writer update(Writer writer);
 }

@@ -12,6 +12,8 @@ spring:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
         format_sql: true
+  main:
+    allow-bean-definition-overriding: true
 ---
 spring:
   profiles: prod

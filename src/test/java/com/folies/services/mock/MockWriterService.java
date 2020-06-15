@@ -16,13 +16,13 @@ public class MockWriterService implements WriterService {
     }
 
     @Override
-    public List<Writer> findBySecondName(Object secondName) {
+    public List<Writer> findBySecondName(String secondName) {
         return new ArrayList<>();
     }
 
     @Override
-    public Writer findById(Object id) {
-        return new Writer(Integer.valueOf((String) id),"Jane", "Doe", Calendar.getInstance().getTime());
+    public Writer findById(String id) {
+        return new Writer(Integer.valueOf(id),"Jane", "Doe", Calendar.getInstance().getTime());
     }
 
     @Override
@@ -31,7 +31,7 @@ public class MockWriterService implements WriterService {
     }
 
     @Override
-    public void delete(Object id) {
+    public void delete(String id) {
 
     }
 
